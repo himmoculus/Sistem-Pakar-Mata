@@ -1,0 +1,77 @@
+/* Mengatur font bawaan agar lebih modern */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5 !important; /* Warna latar belakang abu-abu terang */
+}
+
+/* Membatasi lebar konten agar tidak terlalu melebar di layar laptop/PC */
+#area-cetak {
+    max-width: 800px;
+    margin: 0 auto; /* Posisi di tengah layar */
+}
+
+/* Membuat sudut kotak (card) lebih halus dan menghilangkan garis pinggir */
+.card {
+    border: none !important;
+    border-radius: 12px !important;
+}
+
+/* Mengubah warna biru header agar lebih gelap dan profesional */
+.bg-primary {
+    background-color: #285494 !important; 
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-weight: bold;
+}
+
+/* Memperbesar ukuran kotak centang (checkbox) biar mudah di-klik */
+input[type="checkbox"] {
+    transform: scale(1.3);
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Memberikan efek warna abu-abu saat kursor diarahkan ke pilihan gejala */
+form .mb-2 {
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+form .mb-2:hover {
+    background-color: #e2e8f0;
+}
+
+/* Merapikan tampilan list statistik di halaman Home */
+.list-group-item {
+    font-size: 16px;
+    padding: 12px 20px;
+    border: 1px solid #e9ecef;
+}
+
+/* Mengatur ukuran teks persentase hasil diagnosa */
+#hasilPersentase {
+    color: #198754; /* Warna hijau sukses */
+}
+/* Menjaga rasio tinggi maksimal wadah grafik agar seimbang di laptop */
+#chartStatistik {
+    max-height: 280px !important;
+}
+
+/* Mempercantik tampilan kotak form seleksi dropdown */
+.form-select {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
