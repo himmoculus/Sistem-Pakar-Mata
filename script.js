@@ -151,14 +151,33 @@ function prevStep() {
 }
 
 function switchSection(section) {
-    if(section === 'home') {
-        document.getElementById('section-home').classList.remove('hidden');
-        document.getElementById('section-konsultasi').classList.add('hidden');
-        document.getElementById('section-hasil').classList.add('hidden');
-    } else {
-        document.getElementById('section-home').classList.add('hidden');
-        document.getElementById('section-konsultasi').classList.remove('hidden');
-        document.getElementById('section-hasil').classList.add('hidden');
+    // Tangkap semua elemen section
+    const secHome = document.getElementById('section-home');
+    const secKonsultasi = document.getElementById('section-konsultasi');
+    const secHasil = document.getElementById('section-hasil');
+
+    // Pastikan elemennya ada di HTML untuk mencegah eror 'null' di console
+    if (!secHome || !secKonsultasi || !secHasil) return;
+
+    if (section === 'home') {
+        secHome.classList.remove('hidden');
+        secKonsultasi.classList.add('hidden');
+        secHasil.classList.add('hidden');
+    } else if (section === 'konsultasi') {
+        secHome.classList.add('hidden');
+        secKonsultasi.classList.remove('hidden');
+        secHasil.classList.add('hidden');
+        
+        // Tambahan pengaman: Setiap klik tombol atas, kembalikan kuesioner ke Step 1 (Identitas)
+        currentStep = 1;
+        document.getElementById('step-1-content').classList.remove('hidden');
+        document.getElementById('step-2-content').classList.add('hidden');
+        
+        // Reset indikator warna stepper di atas kuesioner
+        document.getElementById('step-indicator-2').classList.replace('bg-halodoc-blue', 'bg-slate-200');
+        document.getElementById('step-indicator-2').classList.replace('text-white', 'text-slate-500');
+        document.getElementById('step-label-2').classList.replace('text-slate-800', 'text-slate-400');
+        document.getElementById('step-line').classList.replace('bg-halodoc-blue', 'bg-slate-200');
     }
 }
 
