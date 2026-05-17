@@ -1,4 +1,6 @@
-// DATA KNOWLEDGE BASE DARI JURNAL PENELITIAN TEOREMA BAYES
+// ==========================================
+// 1. DATA KNOWLEDGE BASE (DIAGNOSA PENYAKIT)
+// ==========================================
 const penyakitData = {
     'H1': { nama: 'Katarak', prior: 0.5, desc: 'Kondisi kekeruhan pada lensa mata yang menyebabkan menurunnya kemampuan penglihatan secara bertahap sampai menyerupai kabut.', solusi: 'Disarankan untuk berkonsultasi dengan spesialis mata guna perencanaan tindakan bedah mikro (operasi katarak) ekstraksi lensa.' },
     'H2': { nama: 'Keratitis', prior: 0.2, desc: 'Peradangan atau inflamasi pada kornea mata yang dipicu oleh infeksi bakteri, virus, jamur, atau cedera fisik ringan.', solusi: 'Pemberian obat tetes mata antibiotik atau antivirus steril intensif di bawah pengawasan ketat tim medis spesialis.' },
@@ -7,38 +9,56 @@ const penyakitData = {
     'H5': { nama: 'Glukoma', prior: 0.1, desc: 'Kerusakan saraf optik progresif akibat peningkatan tekanan intraokular cairan internal bola mata yang berisiko memicu kebutaan permanen.', solusi: 'Segera lakukan pemeriksaan tekanan bola mata (tonometri) ke klinik untuk resep obat tetes penurun tekanan atau opsi laser.' }
 };
 
-// Pemetaan Gejala
+// Pemetaan Gejala yang Telah Diperluas (15 Gejala)
 const gejalaList = [
     { id: 'E1', teks: 'Apakah mata Anda terasa silau saat melihat paparan cahaya?' },
-    { id: 'E2', teks: 'Apakah lensa internal bola mata Anda terlihat berubah menjadi keruh?' },
+    { id: 'E2', teks: 'Apakah lensa internal bola mata Anda terlihat berubah menjadi keruh/putih?' },
     { id: 'E3', teks: 'Apakah tingkat penglihatan Anda memburuk atau kabur pada siang hari?' },
-    { id: 'E4', teks: 'Apakah pandangan visual mata Anda terasa berkabut atau berawan?' },
-    { id: 'E7', teks: 'Apakah bagian bola mata Anda berwarna kemerahan?' },
-    { id: 'E12', teks: 'Apakah mata Anda mengalami sensasi nyeri atau cenat-cenut?' },
-    { id: 'E14', teks: 'Apakah terdapat benjolan kecil/pembengkakan lokal di kelopak mata?' },
-    { id: 'E22', teks: 'Apakah ruang batas sudut pandang (lapang pandang) mata terasa menyempit?' }
+    { id: 'E4', teks: 'Apakah pandangan visual mata Anda terasa berkabut, berawan, atau berasap?' },
+    { id: 'E5', teks: 'Mata terasa mengganjal seperti ada pasir di dalamnya?' },
+    { id: 'E6', teks: 'Apakah mata Anda sering mengeluarkan air mata secara berlebihan (berair)?' },
+    { id: 'E7', teks: 'Apakah bagian putih bola mata Anda berwarna kemerahan?' },
+    { id: 'E8', teks: 'Apakah mata terasa sangat gatal dan ingin terus dikucek?' },
+    { id: 'E9', teks: 'Keluar kotoran mata (belek) kental berwarna kekuningan atau kehijauan?' },
+    { id: 'E10', teks: 'Apakah Anda mengalami pandangan ganda (diplopia) saat melihat satu objek?' },
+    { id: 'E11', teks: 'Mata terasa sangat kering dan perih saat berkedip?' },
+    { id: 'E12', teks: 'Apakah mata Anda mengalami sensasi nyeri hebat atau cenat-cenut?' },
+    { id: 'E13', teks: 'Apakah Anda sering melihat lingkaran cahaya (halo) di sekitar lampu pada malam hari?' },
+    { id: 'E14', teks: 'Apakah terdapat benjolan kecil atau pembengkakan lokal di kelopak mata?' },
+    { id: 'E15', teks: 'Apakah ruang batas sudut pandang (lapang pandang) mata bagian samping terasa menyempit?' }
 ];
 
-// Matriks Probabilitas Kondisional P(Ei | Hj)
+// Matriks Probabilitas Kondisional Baru P(Ei | Hj) untuk 15 Gejala
 const conditionalProbabilities = {
     'E1':  { 'H1': 0.9, 'H2': 0.8, 'H3': 0.1, 'H4': 0.3, 'H5': 0.7 },
     'E2':  { 'H1': 0.9, 'H2': 0.1, 'H3': 0.1, 'H4': 0.1, 'H5': 0.2 },
     'E3':  { 'H1': 0.7, 'H2': 0.4, 'H3': 0.1, 'H4': 0.2, 'H5': 0.5 },
     'E4':  { 'H1': 0.9, 'H2': 0.1, 'H3': 0.1, 'H4': 0.1, 'H5': 0.2 },
+    'E5':  { 'H1': 0.1, 'H2': 0.8, 'H3': 0.4, 'H4': 0.6, 'H5': 0.2 },
+    'E6':  { 'H1': 0.2, 'H2': 0.7, 'H3': 0.3, 'H4': 0.8, 'H5': 0.3 },
     'E7':  { 'H1': 0.1, 'H2': 0.9, 'H3': 0.6, 'H4': 0.9, 'H5': 0.4 },
+    'E8':  { 'H1': 0.1, 'H2': 0.3, 'H3': 0.2, 'H4': 0.8, 'H5': 0.1 },
+    'E9':  { 'H1': 0.1, 'H2': 0.6, 'H3': 0.2, 'H4': 0.8, 'H5': 0.1 },
+    'E10': { 'H1': 0.6, 'H2': 0.2, 'H3': 0.1, 'H4': 0.1, 'H5': 0.3 },
+    'E11': { 'H1': 0.2, 'H2': 0.5, 'H3': 0.1, 'H4': 0.6, 'H5': 0.2 },
     'E12': { 'H1': 0.1, 'H2': 0.7, 'H3': 0.3, 'H4': 0.1, 'H5': 0.8 },
+    'E13': { 'H1': 0.5, 'H2': 0.2, 'H3': 0.1, 'H4': 0.1, 'H5': 0.9 },
     'E14': { 'H1': 0.1, 'H2': 0.1, 'H3': 0.9, 'H4': 0.1, 'H5': 0.1 },
-    'E22': { 'H1': 0.3, 'H2': 0.1, 'H3': 0.1, 'H4': 0.1, 'H5': 0.9 }
+    'E15': { 'H1': 0.3, 'H2': 0.1, 'H3': 0.1, 'H4': 0.1, 'H5': 0.9 }
 };
 
 let currentStep = 1;
 let pieChartInstance = null;
 
+// Jalankan fungsi saat halaman selesai dimuat
 document.addEventListener("DOMContentLoaded", function() {
     renderSymptomsChecklist();
     renderRatioChart();
 });
 
+// ==========================================
+// 2. FUNGSI RENDER TAMPILAN (DOM MANIPULATION)
+// ==========================================
 function renderSymptomsChecklist() {
     const container = document.getElementById('symptoms-list-container');
     container.innerHTML = '';
@@ -99,6 +119,9 @@ function hideDiseaseInfo() {
     document.getElementById('disease-placeholder').classList.remove('hidden');
 }
 
+// ==========================================
+// 3. LOGIKA ALUR MULTI-STEP & NAVIGASI
+// ==========================================
 function nextStep() {
     if (document.getElementById('patient-name').value.trim() === "") {
         alert("Silakan masukkan nama lengkap Anda terlebih dahulu.");
@@ -139,6 +162,9 @@ function switchSection(section) {
     }
 }
 
+// ==========================================
+// 4. MESIN UTAMA PERHITUNGAN TEOREMA BAYES
+// ==========================================
 function calculateBayes(event) {
     event.preventDefault();
     const checkboxes = document.querySelectorAll('input[name="selected_symptoms"]:checked');
@@ -153,6 +179,7 @@ function calculateBayes(event) {
     let totalPenyebutSemuaHipotesis = 0;
     let traceLogHtml = '';
 
+    // Langkah 1 & 2: Hitung Pembilang P(Hi) * P(E1|Hi) * P(E2|Hi)...
     for (let hKey in penyakitData) {
         let prior = penyakitData[hKey].prior;
         let perkalianKondisional = 1;
@@ -179,6 +206,7 @@ function calculateBayes(event) {
     traceLogHtml += `<div class="mt-3 pt-2 border-t border-slate-200 font-bold text-slate-800">Total Penyebut (&Sigma; Pembilang j) = ${totalPenyebutSemuaHipotesis.toFixed(6)}</div>`;
     document.getElementById('calculation-steps-log').innerHTML = traceLogHtml;
 
+    // Langkah 3: Hitung Nilai Posterior Akhir (Pembilang / Penyebut)
     let hasilAkhirPosterior = [];
     let penyakitTertinggi = null;
     let nilaiMax = -1;
@@ -195,6 +223,7 @@ function calculateBayes(event) {
         }
     }
 
+    // Urutkan hasil tertinggi ke terendah untuk tabel log
     hasilAkhirPosterior.sort((a, b) => b.nilai - a.nilai);
     const tableBody = document.getElementById('calculation-table-body');
     tableBody.innerHTML = '';
@@ -211,6 +240,7 @@ function calculateBayes(event) {
         `;
     });
 
+    // Output teks ke interface hasil
     const namaPasien = document.getElementById('patient-name').value;
     document.getElementById('result-patient-heading').innerText = `Hai ${namaPasien}, Analisis Sistem Menunjukkan:`;
     document.getElementById('result-disease-title').innerText = `${penyakitData[penyakitTertinggi].nama} (${penyakitTertinggi})`;
@@ -218,6 +248,7 @@ function calculateBayes(event) {
     document.getElementById('result-disease-desc').innerText = penyakitData[penyakitTertinggi].desc;
     document.getElementById('result-disease-solution').innerText = penyakitData[penyakitTertinggi].solusi;
 
+    // Pindah section tampilan
     document.getElementById('section-konsultasi').classList.add('hidden');
     document.getElementById('section-hasil').classList.remove('hidden');
     window.scrollTo({ top: 0, behavior: 'smooth' });
