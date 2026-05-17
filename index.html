@@ -3,152 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Pakar Diagnosa Penyakit Mata</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Oculai - Sistem Pakar Kesehatan Mata Premium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], heading: ['Plus Jakarta Sans', 'sans-serif'] },
+                    colors: { halodoc: { blue: '#007EBD', darkBlue: '#0A4B75', lightBg: '#F4F9FC', pink: '#DE1B52', teal: '#14B8A6' } }
+                }
+            }
+        }
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-light">
+<body class="text-slate-800 antialiased custom-scrollbar">
 
-<div class="container mt-5" id="area-cetak">
-    <div class="card bg-primary text-white text-center p-4 mb-4 shadow-sm">
-        <h2>Sistem Pakar Diagnosa Penyakit Mata</h2>
-        <p>Implementasi Sistem Pakar Berbasis Aturan & Logika Keyakinan Gejala</p>
-    </div>
-
-    <div id="home-section" class="card p-4 mb-4 shadow-sm">
-        <h4 class="mb-3 text-center fw-bold text-secondary">Statistik Penyakit (Dari Hasil Survei Pasien)</h4>
-        <div class="mb-4" style="position: relative; max-height: 320px;">
-            <canvas id="chartStatistik" width="400" height="180"></canvas>
+    <nav class="no-print sticky top-0 z-50 bg-white border-b border-slate-100 shadow-sm backdrop-blur-md bg-white/90">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="switchSection('home')">
+                <div class="w-9 h-9 bg-gradient-to-tr from-halodoc-blue to-teal-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md shadow-blue-200">O</div>
+                <span class="font-heading font-extrabold text-xl tracking-tight bg-gradient-to-r from-halodoc-darkBlue to-halodoc-blue bg-clip-text text-transparent">Oculai.</span>
+            </div>
+            <div class="flex items-center gap-6 text-sm font-medium text-slate-600">
+                <button onclick="switchSection('home')" class="hover:text-halodoc-blue transition-colors">Dashboard</button>
+                <button onclick="switchSection('konsultasi')" class="bg-halodoc-blue text-white px-5 py-2 rounded-full font-semibold hover:bg-opacity-90 shadow-md shadow-blue-100 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    Mulai Konsultasi
+                </button>
+            </div>
         </div>
-        <div class="text-center">
-            <button class="btn btn-success btn-lg px-5 shadow fw-bold" onclick="mulaiTes()">Mulai Kuesioner Survei</button>
-        </div>
-    </div>
+    </nav>
 
-    <div id="diagnosa-section" class="card p-4 mb-4 shadow-sm" style="display: none;">
-        <h4 class="border-bottom pb-2 mb-3 text-primary fw-bold">👤 Identitas Pasien</h4>
-        <div class="mb-4">
-            <label class="form-label fw-bold">Nama Lengkap Pasien</label>
-            <input type="text" id="namaPasien" class="form-control form-control-lg" placeholder="Masukkan nama Anda...">
-        </div>
-
-        <h4 class="border-bottom pb-2 mb-3 text-primary fw-bold">👁️ Pilih Kondisi Gejala Mata</h4>
-        <p class="text-muted small mb-4">Pilihlah tingkat keyakinan sesuai dengan kondisi nyata yang Anda rasakan saat ini.</p>
-        
-        <form id="formDiagnosa">
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E1. Apakah Anda merasa silau saat melihat cahaya?</label>
-                <select id="E1" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E2. Apakah lensa mata Anda berubah warna menjadi keruh?</label>
-                <select id="E2" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E3. Apakah penglihatan Anda terasa kabur khusus pada siang hari?</label>
-                <select id="E3" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E4. Apakah pandangan mata Anda terasa berkabut / berawan?</label>
-                <select id="E4" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E7. Apakah bola mata Anda berwarna merah?</label>
-                <select id="E7" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti (Ringan)</option>
-                    <option value="0.5">Hampir Pasti (Sedang)</option>
-                    <option value="0.75">Cukup Pasti (Parah)</option>
-                    <option value="1.0">Pasti (Sangat Parah)</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E12. Apakah mata Anda terasa nyeri atau cenat-cenut?</label>
-                <select id="E12" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E14. Apakah terdapat benjolan kecil (seperti bintitan) pada kelopak mata?</label>
-                <select id="E14" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-
-            <div class="mb-3 p-3 border rounded bg-white shadow-sm">
-                <label class="form-label fw-bold d-block text-dark">E22. Apakah lapang pandang sudut penglihatan Anda terasa menyempit?</label>
-                <select id="E22" class="form-select form-select-md">
-                    <option value="0">Tidak</option>
-                    <option value="0.25">Kurang Pasti</option>
-                    <option value="0.5">Hampir Pasti</option>
-                    <option value="0.75">Cukup Pasti</option>
-                    <option value="1.0">Pasti</option>
-                </select>
-            </div>
-            
-            <button type="button" class="btn btn-primary w-100 mt-4 btn-lg shadow fw-bold" onclick="hitungDiagnosa()">Proses Analisis Diagnosa</button>
-        </form>
-    </div>
-
-    <div id="hasil-section" class="card p-4 shadow-sm" style="display: none;">
-        <h3 class="text-center text-primary border-bottom pb-3 mb-4 fw-bold">🩺 Hasil Rekomendasi Diagnosa</h3>
-        <p class="fs-5"><strong>Nama Lengkap Pasien:</strong> <span id="hasilNama" class="text-secondary"></span></p>
-        <p class="fs-5"><strong>Diagnosis Hasil Aturan:</strong> <span id="hasilPenyakit" class="fw-bold text-danger"></span></p>
-        <p class="fs-5"><strong>Tingkat Kepastian (Gejala):</strong> <span id="hasilPersentase" class="fw-bold text-success"></span>%</p>
-        
-        <div class="mt-4 p-3 bg-white border border-primary rounded shadow-sm">
-            <h5 class="text-primary fw-bold mb-3">📋 Saran Penanganan & Cara Mengobati:</h5>
-            <div id="hasilPengobatan" class="lh-base text-dark">
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <section id="section-home" class="space-y-10 transition-all duration-300">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-halodoc-darkBlue text-white rounded-3xl p-8 md:p-12 relative overflow-hidden shadow-xl shadow-slate-200">
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-halodoc-blue rounded-full blur-3xl opacity-20"></div>
+                <div class="max-w-xl space-y-4 relative z-10">
+                    <span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1.5 rounded-full font-semibold tracking-wider uppercase">Teorema Bayes Berbasis Jurnal</span>
+                    <h1 class="text-3xl md:text-4xl font-heading font-extrabold tracking-tight leading-tight">Periksa Kesehatan Mata Anda Secara Mandiri & Ilmiah</h1>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">Dapatkan hasil analisis probabilitas klinis gangguan mata yang akurat, cepat, dan terpercaya layaknya konsultasi langsung bersama dokter spesialis.</p>
+                    <div class="pt-4">
+                        <button onclick="switchSection('konsultasi')" class="bg-white text-slate-900 font-bold px-6 py-3 rounded-2xl shadow-lg hover:bg-slate-100 transition-all text-sm">Coba Konsultasi Sekarang</button>
+                    </div>
                 </div>
-        </div>
-        
-        <div class="d-flex gap-3 mt-4" data-html2canvas-ignore="true">
-            <button class="btn btn-danger flex-fill p-2 fw-bold shadow-sm" onclick="downloadPDF()">📥 Download Hasil PDF</button>
-            <button class="btn btn-secondary flex-fill p-2 fw-bold shadow-sm" onclick="kembaliKeHome()">🏠 Kembali ke Beranda</button>
-        </div>
-    </div>
-</div>
+            </div>
 
-<script src="script.js"></script>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                <div class="md:col-span-5 bg-white border border-slate-100 shadow-sm rounded-3xl p-6 flex flex-col items-center justify-center">
+                    <div class="text-center w-full mb-4">
+                        <h3 class="font-heading font-bold text-lg text-slate-800">Rasio Penyakit Mata</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Berdasarkan data statistik klinis nasional</p>
+                    </div>
+                    <div class="w-full max-w-[260px] aspect-square relative">
+                        <canvas id="ratioPieChart"></canvas>
+                    </div>
+                    <p class="text-center text-[11px] text-slate-400 mt-4 italic">*Klik diagram lingkaran untuk melihat info medis.</p>
+                </div>
+
+                <div class="md:col-span-7 space-y-4">
+                    <div id="disease-placeholder" class="bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl p-8 text-center flex flex-col items-center justify-center h-full min-h-[300px]">
+                        <h4 class="font-heading font-bold text-slate-700 mb-1">Informasi Medis Interaktif</h4>
+                        <p class="text-slate-400 text-sm max-w-xs">Silakan tekan salah satu bagian diagram lingkaran di samping.</p>
+                    </div>
+
+                    <div id="disease-info-card" class="hidden bg-white border border-slate-100 shadow-sm rounded-3xl p-6 relative">
+                        <div class="flex items-start justify-between border-b border-slate-100 pb-4 mb-4">
+                            <div>
+                                <span class="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-halodoc-blue rounded-md uppercase" id="info-code">H1</span>
+                                <h3 class="font-heading font-extrabold text-xl text-slate-800 mt-2" id="info-title">-</h3>
+                            </div>
+                            <button onclick="hideDiseaseInfo()" class="text-slate-400 hover:text-slate-600 bg-slate-50 p-2 rounded-xl text-xs font-medium">✕ Kembali</button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <h5 class="text-xs font-bold uppercase text-slate-400 mb-1">Deskripsi Medis</h5>
+                                <p class="text-sm text-slate-600 leading-relaxed" id="info-desc">-</p>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-bold uppercase text-slate-400 mb-1">Langkah Penanganan Awal</h5>
+                                <p class="text-sm text-slate-600 leading-relaxed" id="info-solution">-</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-konsultasi" class="hidden max-w-2xl mx-auto transition-all duration-300">
+            <div class="flex items-center justify-between mb-8 px-2">
+                <div class="flex items-center gap-3">
+                    <div id="step-indicator-1" class="w-8 h-8 rounded-full bg-halodoc-blue text-white flex items-center justify-center text-sm font-bold shadow-md shadow-blue-100">1</div>
+                    <span id="step-label-1" class="text-sm font-semibold text-slate-800">Identitas Medis</span>
+                </div>
+                <div class="flex-1 h-[2px] bg-slate-200 mx-4 max-w-[80px]" id="step-line"></div>
+                <div class="flex items-center gap-3">
+                    <div id="step-indicator-2" class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-sm font-bold">2</div>
+                    <span id="step-label-2" class="text-sm font-medium text-slate-400">Analisis Gejala</span>
+                </div>
+            </div>
+
+            <form id="diagnosaForm" onsubmit="calculateBayes(event)">
+                <div id="step-1-content" class="space-y-6">
+                    <div class="bg-white border border-slate-100 shadow-md shadow-slate-100/60 rounded-3xl p-6 md:p-8 space-y-5">
+                        <div class="border-b border-slate-50 pb-4">
+                            <h3 class="font-heading font-extrabold text-lg text-slate-800">Lengkapi Profil Kesehatan</h3>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold uppercase text-slate-500">Nama Lengkap</label>
+                            <input type="text" id="patient-name" required placeholder="Contoh: Budi Santoso" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-halodoc-blue outline-none text-sm transition-all">
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold uppercase text-slate-500">Jenis Kelamin</label>
+                                <select id="patient-gender" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-halodoc-blue outline-none text-sm bg-white">
+                                    <option value="Pria">Pria</option>
+                                    <option value="Wanita">Wanita</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-xs font-bold uppercase text-slate-500">Rentang Usia</label>
+                                <select id="patient-age" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-halodoc-blue outline-none text-sm bg-white">
+                                    <option value="Anak-anak">Anak-anak (&lt; 12 tahun)</option>
+                                    <option value="Remaja">Remaja (12 - 25 tahun)</option>
+                                    <option value="Dewasa">Dewasa (26 - 45 tahun)</option>
+                                    <option value="Lansia">Lansia (&gt; 45 tahun)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold uppercase text-slate-500">Riwayat Penyakit (Opsional)</label>
+                            <input type="text" id="patient-history" placeholder="Contoh: Diabetes, Minus" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-100 focus:border-halodoc-blue outline-none text-sm transition-all">
+                        </div>
+                    </div>
+                    <div class="flex justify-end">
+                        <button type="button" onclick="nextStep()" class="bg-halodoc-blue text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md hover:bg-opacity-95 transition-all">Lanjutkan Analisis &rarr;</button>
+                    </div>
+                </div>
+
+                <div id="step-2-content" class="hidden space-y-6">
+                    <div class="bg-white border border-slate-100 shadow-md rounded-3xl p-6 md:p-8">
+                        <div class="border-b border-slate-50 pb-4 mb-5">
+                            <h3 class="font-heading font-extrabold text-lg text-slate-800">Evaluasi Gejala Klinis</h3>
+                        </div>
+                        <div class="space-y-3" id="symptoms-list-container"></div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <button type="button" onclick="prevStep()" class="border border-slate-200 text-slate-500 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-50 transition-all">&larr; Kembali</button>
+                        <button type="submit" class="bg-gradient-to-r from-halodoc-blue to-teal-600 text-white px-8 py-3 rounded-xl font-bold text-sm shadow-lg hover:opacity-95 transition-all">Proses Diagnosa</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <section id="section-hasil" class="hidden max-w-3xl mx-auto space-y-6 transition-all duration-300">
+            <div class="bg-white border border-slate-100 shadow-md rounded-3xl p-6 md:p-8 text-center space-y-5 relative overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-halodoc-blue to-teal-400"></div>
+                <div class="space-y-1">
+                    <p class="text-xs font-bold uppercase tracking-widest text-slate-400">Hasil Analisis Medis Terkalkulasi</p>
+                    <h2 class="text-2xl font-heading font-extrabold text-slate-800" id="result-patient-heading">-</h2>
+                </div>
+                <div class="p-6 bg-slate-50 border border-slate-100 rounded-2xl max-w-md mx-auto space-y-2">
+                    <h1 class="text-3xl font-heading font-black text-halodoc-blue" id="result-disease-title">-</h1>
+                    <div class="text-sm font-semibold text-slate-500 flex items-center justify-center gap-1">
+                        Tingkat Kepastian Probabilitas: 
+                        <span class="text-teal-600 font-bold text-base" id="result-probability-value">-</span>
+                    </div>
+                </div>
+                <div class="text-left max-w-xl mx-auto space-y-3 pt-2">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Definisi Penyakit</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed" id="result-disease-desc">-</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Rekomendasi Tindakan</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed" id="result-disease-solution">-</p>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 items-center justify-center pt-4 border-t border-slate-100 no-print">
+                    <button onclick="window.print()" class="w-full sm:w-auto bg-slate-900 text-white font-bold text-xs px-5 py-3 rounded-xl hover:bg-slate-800 transition-all">Cetak Laporan PDF</button>
+                    <button onclick="toggleCalculationTrace()" class="w-full sm:w-auto border border-slate-200 text-slate-600 font-bold text-xs px-5 py-3 rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+                        <span>Lihat Langkah Perhitungan Bayes</span>
+                        <svg id="calc-arrow-icon" class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="calculation-trace-panel" class="hidden bg-white border border-slate-100 shadow-md rounded-3xl p-6 md:p-8 space-y-6">
+                <div class="border-b border-slate-100 pb-3">
+                    <h3 class="font-heading font-extrabold text-lg text-slate-800">Log Alur Perhitungan Teorema Bayes</h3>
+                </div>
+                <div class="overflow-x-auto border border-slate-100 rounded-2xl">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-100 text-slate-500 font-bold uppercase tracking-wider">
+                                <th class="p-3.5">Kode</th>
+                                <th class="p-3.5">Penyakit</th>
+                                <th class="p-3.5 text-center">Nilai Akhir Posterior</th>
+                                <th class="p-3.5 text-right">Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calculation-table-body" class="divide-y divide-slate-100 font-medium text-slate-700"></tbody>
+                    </table>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold uppercase text-slate-400">Rincian Perkalian Probabilitas:</h4>
+                    <div id="calculation-steps-log" class="font-mono text-xs text-slate-600 bg-slate-50 rounded-2xl p-4 space-y-2 border border-slate-100 overflow-x-auto"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-center no-print">
+                <button onclick="resetConsultation()" class="text-sm font-semibold text-halodoc-blue hover:text-opacity-80 transition-all">&cularr; Mulai Konsultasi Baru</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
