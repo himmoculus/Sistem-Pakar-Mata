@@ -1,9 +1,3 @@
-// ==========================================
-// DATA BASIS PENGETAHUAN
-// Sumber data penyakit, gejala, dan bobot mengikuti Bab III/jurnal utama.
-// Rumus perhitungan mengikuti Teorema Bayes untuk beberapa hipotesis.
-// ==========================================
-
 const penyakitData = {
     H1: {
         nama: 'Katarak',
