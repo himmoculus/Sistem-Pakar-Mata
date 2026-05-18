@@ -265,9 +265,7 @@ function calculateBayes(event) {
             rel.penyakit === hKey && selectedRelationCodes.includes(rel.kode)
         );
         const totalProbGejala = relasiCocok.reduce((sum, rel) => sum + rel.probabilitas, 0);
-        const rawPEvidenceGivenHypothesis = totalProbGejala / jumlahGejalaDipilih;
-        // Dibulatkan 2 angka di belakang koma agar sesuai dengan contoh perhitungan pada Bab III.
-        const pEvidenceGivenHypothesis = Math.round(rawPEvidenceGivenHypothesis * 100) / 100;
+        const pEvidenceGivenHypothesis = totalProbGejala / jumlahGejalaDipilih;
         const pembilang = pEvidenceGivenHypothesis * prior;
 
         hasil.push({
@@ -859,7 +857,15 @@ function resetConsultation() {
 }
 
 function formatDecimal(value) {
-    return Number(value).toFixed(3).replace(/\.000$/, '');
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+        return '0';
+    }
+
+    return number
+        .toFixed(6)
+        .replace(/\.?0+$/, '');
 }
 
 function formatPercent(value) {
