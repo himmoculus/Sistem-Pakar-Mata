@@ -1,88 +1,100 @@
+const totalDataPenyakit = 1223;
+
 const penyakitData = {
     H1: {
-        nama: 'Katarak',
-        prior: 0.2,
-        desc: 'Katarak adalah kondisi ketika lensa mata menjadi keruh sehingga penglihatan terlihat kabur atau berkabut.',
-        solusi: 'Disarankan melakukan pemeriksaan ke dokter spesialis mata untuk memastikan kondisi lensa mata dan mendapatkan penanganan yang tepat.'
+        nama: 'Retinopati Diabetik',
+        jumlahData: 697,
+        prior: 697 / totalDataPenyakit,
+        desc: 'Retinopati diabetik adalah gangguan pada retina mata yang berhubungan dengan penyakit diabetes. Kondisi ini dapat menyebabkan kerusakan pembuluh darah retina dan mengganggu penglihatan.',
+        solusi: 'Disarankan melakukan pemeriksaan mata secara rutin, terutama bagi penderita diabetes, serta mengontrol kadar gula darah dan berkonsultasi dengan dokter spesialis mata.'
     },
     H2: {
-        nama: 'Keratitis',
-        prior: 0.2,
-        desc: 'Keratitis adalah peradangan pada kornea mata yang dapat ditandai dengan mata merah, nyeri, silau, atau penglihatan kabur.',
-        solusi: 'Disarankan menjaga kebersihan mata, menghindari penggunaan obat mata tanpa anjuran dokter, dan segera memeriksakan mata jika terasa nyeri atau merah.'
+        nama: 'Glaukoma',
+        jumlahData: 120,
+        prior: 120 / totalDataPenyakit,
+        desc: 'Glaukoma adalah penyakit mata yang dapat mengganggu saraf mata dan berisiko menurunkan fungsi penglihatan apabila tidak segera ditangani.',
+        solusi: 'Disarankan segera melakukan pemeriksaan ke dokter spesialis mata karena glaukoma dapat memengaruhi saraf mata dan berisiko menurunkan penglihatan.'
     },
     H3: {
-        nama: 'Hordiolum',
-        prior: 0.2,
-        desc: 'Hordiolum atau bintitan adalah benjolan pada kelopak mata yang biasanya disebabkan oleh infeksi pada kelenjar di sekitar kelopak mata.',
-        solusi: 'Disarankan menjaga kebersihan kelopak mata, tidak memencet benjolan, dan melakukan pemeriksaan jika benjolan membesar atau terasa sakit.'
+        nama: 'Katarak',
+        jumlahData: 146,
+        prior: 146 / totalDataPenyakit,
+        desc: 'Katarak adalah kondisi ketika lensa mata tampak keruh sehingga penglihatan dapat menjadi buram, berkabut, atau tidak jelas.',
+        solusi: 'Disarankan melakukan pemeriksaan ke dokter spesialis mata untuk memastikan kondisi lensa mata dan menentukan penanganan yang sesuai.'
     },
     H4: {
-        nama: 'Konjungtiva',
-        prior: 0.2,
-        desc: 'Konjungtiva adalah gangguan pada selaput mata yang dapat menimbulkan rasa mengganjal, gatal, dan mata berair.',
-        solusi: 'Disarankan menjaga kebersihan mata, tidak mengucek mata, dan menghindari penggunaan barang pribadi secara bergantian seperti handuk.'
+        nama: 'Degenerasi Makula / AMD',
+        jumlahData: 117,
+        prior: 117 / totalDataPenyakit,
+        desc: 'Degenerasi makula atau AMD adalah gangguan pada bagian pusat penglihatan mata yang umumnya berkaitan dengan usia dan dapat memengaruhi ketajaman penglihatan.',
+        solusi: 'Disarankan melakukan pemeriksaan lanjutan ke dokter spesialis mata, terutama jika terdapat gangguan pada pusat penglihatan atau penglihatan mulai menurun.'
     },
     H5: {
-        nama: 'Glukoma',
-        prior: 0.2,
-        desc: 'Glukoma adalah penyakit mata yang dapat mengganggu saraf penglihatan dan berisiko menurunkan fungsi penglihatan jika tidak segera ditangani.',
-        solusi: 'Disarankan segera melakukan pemeriksaan ke dokter spesialis mata karena glukoma dapat berisiko terhadap penglihatan jika tidak segera ditangani.'
+        nama: 'Retinopati Hipertensi',
+        jumlahData: 36,
+        prior: 36 / totalDataPenyakit,
+        desc: 'Retinopati hipertensi adalah gangguan pada retina yang berkaitan dengan tekanan darah tinggi. Kondisi ini dapat memengaruhi pembuluh darah pada retina.',
+        solusi: 'Disarankan mengontrol tekanan darah dan melakukan pemeriksaan mata secara berkala untuk memantau kondisi retina.'
+    },
+    H6: {
+        nama: 'Miopia Patologis',
+        jumlahData: 107,
+        prior: 107 / totalDataPenyakit,
+        desc: 'Miopia patologis adalah kondisi rabun jauh berat yang dapat menyebabkan perubahan pada bagian dalam mata, termasuk retina dan pusat penglihatan.',
+        solusi: 'Disarankan melakukan pemeriksaan mata secara rutin, terutama jika rabun jauh semakin berat atau terdapat gangguan penglihatan.'
     }
 };
 
-// Relasi penyakit-gejala-bobot. Probabilitas = bobot / 10.
+// Relasi penyakit-gejala berdasarkan dataset.
+// Probabilitas dihitung dari rumus: P(Ej|Hi) = jumlah kemunculan gejala / jumlah data penyakit.
 const relasiPenyakitGejala = [
-    { kode: 'E1',  penyakit: 'H1', gejala: 'Silau', bobot: 9 },
-    { kode: 'E2',  penyakit: 'H1', gejala: 'Lensa mata berubah menjadi keruh', bobot: 9 },
-    { kode: 'E3',  penyakit: 'H1', gejala: 'Penglihatan kabur pada siang hari', bobot: 7 },
-    { kode: 'E4',  penyakit: 'H1', gejala: 'Penglihatan berkabut', bobot: 9 },
-    { kode: 'E5',  penyakit: 'H1', gejala: 'Mata tidak nyeri atau merah', bobot: 5 },
-    { kode: 'E6',  penyakit: 'H1', gejala: 'Mata perlahan kabur sampai hanya tampak sinar', bobot: 6 },
+    { kode: 'E5',  penyakit: 'H1', gejala: 'Retinopati diabetik ringan', jumlahMuncul: 308 },
+    { kode: 'E6',  penyakit: 'H1', gejala: 'Retinopati diabetik sedang', jumlahMuncul: 398 },
+    { kode: 'E7',  penyakit: 'H1', gejala: 'Retinopati diabetik berat', jumlahMuncul: 87 },
+    { kode: 'E8',  penyakit: 'H1', gejala: 'Retinopati diabetik proliferatif', jumlahMuncul: 12 },
+    { kode: 'E9',  penyakit: 'H1', gejala: 'Retinopati diabetik proliferatif berat', jumlahMuncul: 4 },
+    { kode: 'E10', penyakit: 'H1', gejala: 'Retinopati diabetik', jumlahMuncul: 2 },
 
-    { kode: 'E7',  penyakit: 'H2', gejala: 'Mata merah', bobot: 9 },
-    { kode: 'E8',  penyakit: 'H2', gejala: 'Penglihatan kabur', bobot: 5 },
-    { kode: 'E9',  penyakit: 'H2', gejala: 'Keluar air mata', bobot: 5 },
-    { kode: 'E10', penyakit: 'H2', gejala: 'Silau', bobot: 6 },
-    { kode: 'E11', penyakit: 'H2', gejala: 'Kelopak mata merah', bobot: 2 },
-    { kode: 'E12', penyakit: 'H2', gejala: 'Mata terasa nyeri', bobot: 3 },
+    { kode: 'E2',  penyakit: 'H2', gejala: 'Debu atau gangguan pada lensa', jumlahMuncul: 3 },
+    { kode: 'E3',  penyakit: 'H2', gejala: 'Glaukoma', jumlahMuncul: 107 },
+    { kode: 'E4',  penyakit: 'H2', gejala: 'Dugaan glaukoma', jumlahMuncul: 13 },
 
-    { kode: 'E13', penyakit: 'H3', gejala: 'Gatal pada tepi kelopak dan mata merah', bobot: 6 },
-    { kode: 'E14', penyakit: 'H3', gejala: 'Ada benjolan', bobot: 9 },
-    { kode: 'E15', penyakit: 'H3', gejala: 'Mata merah', bobot: 9 },
-    { kode: 'E16', penyakit: 'H3', gejala: 'Mata tidak kabur', bobot: 9 },
+    { kode: 'E1',  penyakit: 'H3', gejala: 'Katarak', jumlahMuncul: 146 },
+    { kode: 'E2',  penyakit: 'H3', gejala: 'Debu atau gangguan pada lensa', jumlahMuncul: 20 },
 
-    { kode: 'E17', penyakit: 'H4', gejala: 'Rasa mengganjal pada mata', bobot: 7 },
-    { kode: 'E18', penyakit: 'H4', gejala: 'Kadang terasa gatal-gatal', bobot: 4 },
-    { kode: 'E19', penyakit: 'H4', gejala: 'Mata berair', bobot: 4 },
+    { kode: 'E11', penyakit: 'H4', gejala: 'Degenerasi makula kering terkait usia', jumlahMuncul: 103 },
+    { kode: 'E12', penyakit: 'H4', gejala: 'Degenerasi makula basah terkait usia', jumlahMuncul: 31 },
 
-    { kode: 'E20', penyakit: 'H5', gejala: 'Mata kabur perlahan', bobot: 9 },
-    { kode: 'E21', penyakit: 'H5', gejala: 'Mata tidak nyeri', bobot: 9 },
-    { kode: 'E22', penyakit: 'H5', gejala: 'Lapang pandang menyempit', bobot: 9 }
-].map(item => ({ ...item, probabilitas: item.bobot / 10 }));
+    { kode: 'E13', penyakit: 'H5', gejala: 'Retinopati hipertensi', jumlahMuncul: 36 },
 
-// Gejala yang tampil di web. Gejala dengan nama sama digabung agar pasien tidak menjawab dua kali.
+    { kode: 'E2',  penyakit: 'H6', gejala: 'Debu atau gangguan pada lensa', jumlahMuncul: 4 },
+    { kode: 'E14', penyakit: 'H6', gejala: 'Miopia patologis', jumlahMuncul: 104 },
+    { kode: 'E15', penyakit: 'H6', gejala: 'Retinopati miopia', jumlahMuncul: 2 },
+    { kode: 'E16', penyakit: 'H6', gejala: 'Makulopati miopia', jumlahMuncul: 1 }
+].map(item => ({
+    ...item,
+    jumlahDataPenyakit: penyakitData[item.penyakit].jumlahData,
+    probabilitas: item.jumlahMuncul / penyakitData[item.penyakit].jumlahData
+}));
+
+// Gejala yang tampil di web. Nama gejala dibuat dalam bahasa Indonesia, sedangkan probabilitas tetap dihitung dari dataset.
 const gejalaWeb = [
-    { id: 'G1', kodeTampil: 'E1/E10', teks: 'Silau', relationCodes: ['E1', 'E10'] },
-    { id: 'G2', kodeTampil: 'E2', teks: 'Lensa mata berubah menjadi keruh', relationCodes: ['E2'] },
-    { id: 'G3', kodeTampil: 'E3', teks: 'Penglihatan kabur pada siang hari', relationCodes: ['E3'] },
-    { id: 'G4', kodeTampil: 'E4', teks: 'Penglihatan berkabut', relationCodes: ['E4'] },
-    { id: 'G5', kodeTampil: 'E5', teks: 'Mata tidak nyeri atau merah', relationCodes: ['E5'] },
-    { id: 'G6', kodeTampil: 'E6', teks: 'Mata perlahan kabur sampai hanya tampak sinar', relationCodes: ['E6'] },
-    { id: 'G7', kodeTampil: 'E7/E15', teks: 'Mata merah', relationCodes: ['E7', 'E15'] },
-    { id: 'G8', kodeTampil: 'E8', teks: 'Penglihatan kabur', relationCodes: ['E8'] },
-    { id: 'G9', kodeTampil: 'E9', teks: 'Keluar air mata', relationCodes: ['E9'] },
-    { id: 'G10', kodeTampil: 'E11', teks: 'Kelopak mata merah', relationCodes: ['E11'] },
-    { id: 'G11', kodeTampil: 'E12', teks: 'Mata terasa nyeri', relationCodes: ['E12'] },
-    { id: 'G12', kodeTampil: 'E13', teks: 'Gatal pada tepi kelopak dan mata merah', relationCodes: ['E13'] },
-    { id: 'G13', kodeTampil: 'E14', teks: 'Ada benjolan', relationCodes: ['E14'] },
-    { id: 'G14', kodeTampil: 'E16', teks: 'Mata tidak kabur', relationCodes: ['E16'] },
-    { id: 'G15', kodeTampil: 'E17', teks: 'Rasa mengganjal pada mata', relationCodes: ['E17'] },
-    { id: 'G16', kodeTampil: 'E18', teks: 'Kadang terasa gatal-gatal', relationCodes: ['E18'] },
-    { id: 'G17', kodeTampil: 'E19', teks: 'Mata berair', relationCodes: ['E19'] },
-    { id: 'G18', kodeTampil: 'E20', teks: 'Mata kabur perlahan', relationCodes: ['E20'] },
-    { id: 'G19', kodeTampil: 'E21', teks: 'Mata tidak nyeri', relationCodes: ['E21'] },
-    { id: 'G20', kodeTampil: 'E22', teks: 'Lapang pandang menyempit', relationCodes: ['E22'] }
+    { id: 'G1',  kodeTampil: 'E1',  teks: 'Katarak', relationCodes: ['E1'], pertanyaan: 'Apakah terdapat katarak atau kekeruhan pada lensa mata?' },
+    { id: 'G2',  kodeTampil: 'E2',  teks: 'Debu atau gangguan pada lensa', relationCodes: ['E2'], pertanyaan: 'Apakah terdapat debu, bercak, atau gangguan pada lensa mata?' },
+    { id: 'G3',  kodeTampil: 'E3',  teks: 'Glaukoma', relationCodes: ['E3'], pertanyaan: 'Apakah terdapat tanda glaukoma pada hasil pemeriksaan mata?' },
+    { id: 'G4',  kodeTampil: 'E4',  teks: 'Dugaan glaukoma', relationCodes: ['E4'], pertanyaan: 'Apakah terdapat dugaan glaukoma pada hasil pemeriksaan mata?' },
+    { id: 'G5',  kodeTampil: 'E5',  teks: 'Retinopati diabetik ringan', relationCodes: ['E5'], pertanyaan: 'Apakah terdapat gangguan retina ringan akibat diabetes?' },
+    { id: 'G6',  kodeTampil: 'E6',  teks: 'Retinopati diabetik sedang', relationCodes: ['E6'], pertanyaan: 'Apakah terdapat gangguan retina sedang akibat diabetes?' },
+    { id: 'G7',  kodeTampil: 'E7',  teks: 'Retinopati diabetik berat', relationCodes: ['E7'], pertanyaan: 'Apakah terdapat gangguan retina berat akibat diabetes?' },
+    { id: 'G8',  kodeTampil: 'E8',  teks: 'Retinopati diabetik proliferatif', relationCodes: ['E8'], pertanyaan: 'Apakah terdapat pertumbuhan pembuluh darah tidak normal pada retina akibat diabetes?' },
+    { id: 'G9',  kodeTampil: 'E9',  teks: 'Retinopati diabetik proliferatif berat', relationCodes: ['E9'], pertanyaan: 'Apakah terdapat pertumbuhan pembuluh darah tidak normal pada retina dengan kondisi berat?' },
+    { id: 'G10', kodeTampil: 'E10', teks: 'Retinopati diabetik', relationCodes: ['E10'], pertanyaan: 'Apakah terdapat tanda umum kerusakan retina akibat diabetes?' },
+    { id: 'G11', kodeTampil: 'E11', teks: 'Degenerasi makula kering terkait usia', relationCodes: ['E11'], pertanyaan: 'Apakah terdapat kerusakan pusat penglihatan tipe kering yang berkaitan dengan usia?' },
+    { id: 'G12', kodeTampil: 'E12', teks: 'Degenerasi makula basah terkait usia', relationCodes: ['E12'], pertanyaan: 'Apakah terdapat kerusakan pusat penglihatan tipe basah yang berkaitan dengan usia?' },
+    { id: 'G13', kodeTampil: 'E13', teks: 'Retinopati hipertensi', relationCodes: ['E13'], pertanyaan: 'Apakah terdapat gangguan retina akibat tekanan darah tinggi?' },
+    { id: 'G14', kodeTampil: 'E14', teks: 'Miopia patologis', relationCodes: ['E14'], pertanyaan: 'Apakah terdapat kondisi rabun jauh berat yang memengaruhi bagian dalam mata?' },
+    { id: 'G15', kodeTampil: 'E15', teks: 'Retinopati miopia', relationCodes: ['E15'], pertanyaan: 'Apakah terdapat gangguan retina akibat rabun jauh berat?' },
+    { id: 'G16', kodeTampil: 'E16', teks: 'Makulopati miopia', relationCodes: ['E16'], pertanyaan: 'Apakah terdapat gangguan pusat penglihatan akibat rabun jauh berat?' }
 ];
 
 let currentStep = 1;
@@ -107,7 +119,7 @@ function renderSymptomsChecklist() {
                 <input type="checkbox" name="selected_symptoms" value="${item.id}" class="mt-1 w-5 h-5 rounded-md text-halodoc-blue border-slate-300 focus:ring-halodoc-blue transition-all">
                 <span class="text-sm font-medium text-slate-700 group-hover:text-slate-900 transition-colors leading-relaxed">
                     <span class="inline-block text-[10px] font-bold text-halodoc-blue bg-blue-50 border border-blue-100 px-2 py-0.5 rounded-full mr-2">${item.kodeTampil}</span>
-                    ${index + 1}. Apakah Anda mengalami ${item.teks.toLowerCase()}?
+                    ${index + 1}. ${item.pertanyaan || ('Apakah terdapat ' + item.teks.toLowerCase() + '?')}
                 </span>
             </label>
         `;
@@ -124,8 +136,8 @@ function renderRatioChart() {
         data: {
             labels: Object.values(penyakitData).map(p => p.nama),
             datasets: [{
-                data: [6, 6, 4, 3, 3],
-                backgroundColor: ['#007EBD', '#14B8A6', '#F59E0B', '#EF4444', '#6366F1'],
+                data: Object.values(penyakitData).map(p => p.jumlahData),
+                backgroundColor: ['#007EBD', '#14B8A6', '#F59E0B', '#EF4444', '#6366F1', '#8B5CF6'],
                 borderWidth: 2,
                 borderColor: '#ffffff'
             }]
@@ -370,6 +382,11 @@ function buildManualCalculationHtml(hasil, selectedSymptoms, jumlahGejalaDipilih
         `;
     }).join('');
 
+    const priorDetailHtml = Object.keys(penyakitData).map(kode => {
+        const item = penyakitData[kode];
+        return `P(${kode}) = ${item.jumlahData} / ${totalDataPenyakit} = ${formatDecimal(item.prior)}`;
+    }).join('<br>');
+
     const denominatorTerms = hasil.map(row => `(${formatDecimal(row.pEvidenceGivenHypothesis)} × ${formatDecimal(row.prior)})`).join(' + ');
     const posteriorSteps = hasil.map(row => {
         const isWinner = row.kode === kodePemenang;
@@ -392,8 +409,9 @@ function buildManualCalculationHtml(hasil, selectedSymptoms, jumlahGejalaDipilih
             </div>
             <div>
                 <h4 class="font-bold text-slate-700 mb-1">2. Prior Penyakit</h4>
-                <p>Karena jumlah penyakit ada 5 dan tidak ada data jumlah kasus, maka prior setiap penyakit dibuat sama:</p>
-                <p class="font-mono bg-white rounded-lg border border-slate-100 p-2 mt-1">P(Hi) = 1 / 5 = 0,2</p>
+                <p>Prior dihitung dari jumlah data setiap penyakit pada dataset:</p>
+                <p class="font-mono bg-white rounded-lg border border-slate-100 p-2 mt-1">P(Hi) = jumlah data penyakit / total data penyakit</p>
+                <p class="font-mono bg-white rounded-lg border border-slate-100 p-2 mt-1">${priorDetailHtml}</p>
             </div>
             <div>
                 <h4 class="font-bold text-slate-700 mb-1">3. Rumus yang Digunakan</h4>
@@ -734,8 +752,12 @@ function saveDiagnosisPDF() {
         addTable(['Rank', 'Kode', 'Penyakit', 'P(E|Hi)', 'Prior', 'Hasil'], rankingRows, [16, 20, 48, 32, 26, 40], { fontSize: 7.5 });
 
         addSectionTitle('Perhitungan Manual Lengkap');
+        const priorDetailText = Object.keys(penyakitData).map(kode => {
+            const item = penyakitData[kode];
+            return `P(${kode}) = ${item.jumlahData}/${totalDataPenyakit} = ${formatDecimal(item.prior)}`;
+        }).join('\n');
         addMiniCard('1. Gejala yang Dipilih', `Gejala: ${symptomText}`, `Jumlah gejala yang dipilih = ${data.jumlahGejalaDipilih}`);
-        addMiniCard('2. Prior Penyakit', 'Karena jumlah penyakit ada 5 dan tidak ada data jumlah kasus, maka prior setiap penyakit dibuat sama.', 'P(Hi) = 1 / 5 = 0,2');
+        addMiniCard('2. Prior Penyakit', 'Prior dihitung dari jumlah data setiap penyakit pada dataset.', `P(Hi) = jumlah data penyakit / total data penyakit\n${priorDetailText}`);
         addMiniCard('3. Rumus yang Digunakan', 'Rumus ini mengikuti perhitungan Teorema Bayes yang digunakan pada laporan.', 'P(E|Hi) = jumlah probabilitas gejala cocok / jumlah gejala dipilih\nP(Hi|E) = [P(E|Hi) x P(Hi)] / jumlah [P(E|Hk) x P(Hk)]');
 
         addSectionTitle('4. Menghitung P(E|Hi)');
@@ -807,8 +829,9 @@ function getManualCalculationLines(hasil, selectedSymptoms, jumlahGejalaDipilih,
         { text: `Gejala: ${selectedList}` },
         { text: `Jumlah gejala yang dipilih = ${jumlahGejalaDipilih}` },
         { type: 'title', text: '2. Prior Penyakit' },
-        { text: 'Karena jumlah penyakit ada 5 dan tidak ada data jumlah kasus, maka prior setiap penyakit dibuat sama.' },
-        { text: 'P(Hi) = 1 / 5 = 0,2', style: 'bold' },
+        { text: 'Prior dihitung dari jumlah data setiap penyakit pada dataset.' },
+        { text: 'P(Hi) = jumlah data penyakit / total data penyakit', style: 'bold' },
+        ...Object.keys(penyakitData).map(kode => ({ text: `P(${kode}) = ${penyakitData[kode].jumlahData}/${totalDataPenyakit} = ${formatDecimal(penyakitData[kode].prior)}`, style: 'bold' })),
         { type: 'title', text: '3. Rumus yang Digunakan' },
         { text: 'P(E|Hi) = jumlah probabilitas gejala cocok / jumlah gejala dipilih', style: 'bold' },
         { text: 'P(Hi|E) = [P(E|Hi) x P(Hi)] / jumlah [P(E|Hk) x P(Hk)]', style: 'bold' },
