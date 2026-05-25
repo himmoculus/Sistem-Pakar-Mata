@@ -44,7 +44,7 @@
                 <div class="max-w-2xl space-y-4 relative z-10">
                     <span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1.5 rounded-full font-semibold tracking-wider uppercase">Teorema Bayes</span>
                     <h1 class="text-3xl md:text-4xl font-heading font-extrabold tracking-tight leading-tight">Sistem Pakar Diagnosis Penyakit Mata</h1>
-                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">Periksa Kesehatan Mata Anda Secara Mandiri & Ilmiah. Sistem ini membantu memberikan informasi awal mengenai kemungkinan penyakit mata berdasarkan gejala yang dipilih pengguna. Data gejala, penyakit, dan bobot disesuaikan dengan pembahasan pada laporan.</p>
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed">Periksa Kesehatan Mata Anda Secara Mandiri & Ilmiah. Sistem ini membantu memberikan informasi awal mengenai kemungkinan penyakit mata berdasarkan gejala yang dipilih pengguna. Data penyakit, gejala, prior, dan probabilitas dihitung berdasarkan dataset.</p>
                     <div class="pt-4">
                         <button onclick="switchSection('konsultasi')" class="bg-white text-slate-900 font-bold px-6 py-3 rounded-2xl shadow-lg hover:bg-slate-100 transition-all text-sm">Mulai Diagnosis</button>
                     </div>
@@ -54,8 +54,8 @@
             <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
                 <div class="md:col-span-5 bg-white border border-slate-100 shadow-sm rounded-3xl p-6 flex flex-col items-center justify-center">
                     <div class="text-center w-full mb-4">
-                        <h3 class="font-heading font-bold text-lg text-slate-800">Jumlah Gejala per Penyakit</h3>
-                        <p class="text-xs text-slate-400 mt-0.5">Berdasarkan basis pengetahuan sistem</p>
+                        <h3 class="font-heading font-bold text-lg text-slate-800">Jumlah Data per Penyakit</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">Berdasarkan dataset penyakit mata</p>
                     </div>
                     <div class="w-full max-w-[260px] aspect-square relative">
                         <canvas id="ratioPieChart"></canvas>
@@ -148,7 +148,7 @@
                     <div class="bg-white border border-slate-100 shadow-md rounded-3xl p-6 md:p-8">
                         <div class="border-b border-slate-50 pb-4 mb-5">
                             <h3 class="font-heading font-extrabold text-lg text-slate-800">Pilih Gejala yang Dialami</h3>
-                            <p class="text-sm text-slate-500 mt-1">Cukup centang gejala yang sesuai. Gejala dengan nama sama, seperti Silau dan Mata merah, digabung agar tidak ditanyakan berulang.</p>
+                            <p class="text-sm text-slate-500 mt-1">Cukup centang gejala atau tanda yang sesuai dengan hasil pemeriksaan mata pasien.</p>
                         </div>
                         <div class="space-y-3" id="symptoms-list-container"></div>
                     </div>
